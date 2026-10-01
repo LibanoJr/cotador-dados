@@ -34,9 +34,10 @@ Regra adotada: nenhuma regra de validação do protótipo se apoia apenas em fon
 
 | Etapa | Papel da IA (Claude) | Papel humano |
 |---|---|---|
-| Pesquisa | Buscas na web a partir das perguntas acima, leitura das páginas e resumo com a fonte de cada afirmação | Decidir o que é relevante, conferir a afirmação na fonte, classificar o nível e marcar o que falta confirmar |
-| Proposta | Rascunho de seções e tabelas a partir das decisões tomadas | Tese central, recorte, trade-offs, severidade de cada regra, métricas e plano |
-| Código | Aceleração da escrita de modelos, serviços, telas e testes | Arquitetura, revisão linha a linha, execução dos testes, teste manual e visual no navegador |
+| Pesquisa | Buscas na web, leitura das fontes, resumo e classificação de cada afirmação por confiabilidade | Definir o foco e decidir o que entra na proposta |
+| Proposta | Redação de seções e tabelas | Escolher o recorte e aprovar as decisões |
+| Código | Escrita da maior parte dos modelos, serviços, telas e testes | Definir o que construir, rodar os testes, usar o sistema no navegador e em produção, apontar o que não funcionava |
+| Publicação | Guia passo a passo do deploy | Configurar GitHub, Vercel e banco, e conferir o resultado no ar |
 | Revisão | Segunda leitura da proposta contra o código | Decidir o que corrigir |
 
 **O que a revisão encontrou** (erros reais, corrigidos antes da entrega):
@@ -56,9 +57,15 @@ Regra adotada: nenhuma regra de validação do protótipo se apoia apenas em fon
 - **CORS entre frontend e backend.** Apareceu ao rodar os dois em origens diferentes, como será na
   Vercel. Virou configuração documentada e um aviso na tela quando a API não responde.
 - **Números em formato americano** nas mensagens de validação.
+- **Correção de valor que falhava em silêncio.** Encontrado usando a demonstração publicada: quando a API
+  recusava o valor digitado, a tela fechava o campo como se tivesse salvo, e o erro aparecia só no fim da
+  página. Agora a tela aceita os formatos comuns de número e mostra o erro ao lado do campo.
+- **Comparação que sumia depois de publicar.** Também encontrado em produção: a tabela publicada aparecia
+  como "primeira versão", embora fosse a versão 2. Agora ela se compara com a versão que substituiu, e um
+  teste automático cobre o caso.
 
-A lição registrada: teste automatizado não substitui usar o sistema como o usuário usa. Três dos sete
-problemas só apareceram rodando o fluxo inteiro no navegador.
+A lição registrada: teste automatizado não substitui usar o sistema como o usuário usa. Cinco dos nove
+problemas só apareceram usando o sistema, dois deles já em produção.
 
 ---
 
