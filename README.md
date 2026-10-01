@@ -7,11 +7,38 @@ confiabilidade e a atualização dos dados de preço.
 uma esteira que extrai as tabelas das operadoras, confere cada uma contra regras da ANS e contra os
 dados oficiais de preço publicados pela própria ANS, e só manda para conferência humana o que tem risco.
 
-> **Demonstração publicada:** `https://PREENCHER.vercel.app` (dados fictícios; há um botão para
-> reiniciar o cenário).
->
-> **Todos os dados são fictícios.** Operadoras, planos, preços e registros ANS (começando com 900) foram
-> inventados para a demonstração.
+## Demonstração publicada
+
+**https://cotador-dados-46n1.vercel.app** (abre direto, sem login; funciona no celular)
+
+**Todos os dados são fictícios.** Operadoras, planos, preços e registros ANS (começando com 900) foram
+inventados para a demonstração.
+
+### O que você encontra ao abrir
+
+A demonstração já foi usada uma vez, como num dia de trabalho real. Chegou o PDF de reajuste de junho de
+uma operadora, com três tabelas, e a equipe conferiu duas:
+
+- **Essencial Enfermaria:** reajuste limpo de 12,5%, publicado com um clique.
+- **Essencial Apartamento:** preço 35% acima do valor comercial registrado na ANS (o limite é 30%).
+  Publicado com justificativa, que ficou auditada e aparece para o corretor na cotação.
+- **Premium Apartamento: ficou para você.** Está na fila de **Conferência**, bloqueado, porque a faixa 59+
+  veio com um dígito a mais.
+
+### Em 3 minutos
+
+1. **Cotação:** cote DF, PME, idades `30, 45, 62`. Veja a procedência de cada preço (fonte, vigência,
+   versão, link para o PDF original e registro ANS), o plano suspenso pela ANS fora da lista com aviso e a
+   etiqueta da liberação justificada. O Premium Apartamento ainda aparece com o **preço de janeiro**: a
+   tabela nova não foi aprovada, e o corretor nunca vê um valor não conferido.
+2. **Conferência:** preencha o campo **Revisor** e abra o Premium Apartamento. Quatro regras independentes
+   apontam o mesmo valor. Clique em **Corrigir** na faixa 59+, digite `2.466,96`, salve e publique.
+3. **Cotação de novo:** o Premium Apartamento passa a mostrar o preço de junho.
+4. **Fontes e saúde dos dados:** indicadores de qualidade, frescor de cada fonte e a referência ANS.
+
+Para percorrer o fluxo inteiro desde o recebimento do PDF, clique em **Reiniciar demonstração**, no fim da
+aba **Fontes e saúde dos dados**, e siga o [roteiro completo](docs/04-roteiro-demonstracao.md). Se a fila
+estiver vazia, alguém já corrigiu o Premium Apartamento; o reinício também resolve isso.
 
 ![Conferência: erro de digitação bloqueado por quatro regras independentes](docs/img/conferencia-erro-digitacao.png)
 
@@ -20,7 +47,8 @@ dados oficiais de preço publicados pela própria ANS, e só manda para conferê
 | Tempo | Documento | Para quem |
 |---|---|---|
 | 2 min | [`docs/00-resumo-executivo.md`](docs/00-resumo-executivo.md) | Visão de negócio em uma página |
-| 5 min | [`docs/04-roteiro-demonstracao.md`](docs/04-roteiro-demonstracao.md) | Testar o protótipo, pelo link ou localmente |
+| 3 min | [Demonstração publicada](https://cotador-dados-46n1.vercel.app), seção acima | Ver o sistema funcionando, sem instalar nada |
+| 10 min | [`docs/04-roteiro-demonstracao.md`](docs/04-roteiro-demonstracao.md) | Percorrer o fluxo completo, do PDF à cotação |
 | 20 min | [`docs/01-proposta.md`](docs/01-proposta.md) | A proposta completa, respondendo às cinco perguntas do desafio na ordem |
 | Consulta | [`docs/02-anexo-pesquisa.md`](docs/02-anexo-pesquisa.md) | Método, uso de IA, achados com grau de confiança, pendências e referências |
 | Consulta | [`docs/03-deploy.md`](docs/03-deploy.md) | Como a demonstração foi publicada na Vercel |
