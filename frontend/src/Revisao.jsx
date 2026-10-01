@@ -283,12 +283,16 @@ function Detalhe({ id, revisor, aoMudar }) {
 
       <table className="razao">
         <caption>
-          {t.versao_vigente_id ? "Comparação com a tabela vigente" : "Primeira versão desta tabela"}
+          {!t.versao_vigente_id
+            ? "Primeira versão desta tabela"
+            : t.comparacao_tipo === "anterior"
+              ? "Comparação com a versão anterior"
+              : "Comparação com a tabela vigente"}
         </caption>
         <thead>
           <tr>
             <th scope="col">Faixa etária</th>
-            <th scope="col" className="num">Vigente</th>
+            <th scope="col" className="num">{t.comparacao_tipo === "anterior" ? "Anterior" : "Vigente"}</th>
             <th scope="col" className="num">Extraído</th>
             <th scope="col">Variação</th>
             <th scope="col"><span className="sr">Ações</span></th>
