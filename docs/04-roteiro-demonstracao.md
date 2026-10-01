@@ -73,26 +73,3 @@ do arquivo já foi processado.
 
 Dicas: grave em 1280×800 ou maior, com o campo Revisor já preenchido e o cenário recém-reiniciado.
 Fale do problema do corretor antes de falar de tecnologia.
-**7. Fontes e saúde dos dados.** Indicadores de qualidade (98,8% dos valores aceitos sem correção, uma
-liberação justificada), o catálogo de fontes com SLA de frescor (a fonte que depende de uma pessoa
-aparece atrasada) e a referência ANS com a situação de cada produto.
-
-**8. Duplicata.** Volte à Conferência e envie a mesma amostra de novo: o sistema recusa, porque o hash
-do arquivo já foi processado.
-
-**9. Recomeçar.** No fim da tela de Fontes, **Reiniciar demonstração** recria o cenário inicial.
-
-## Roteiro do vídeo (4 a 6 minutos)
-
-| Tempo | O que mostrar | O que falar |
-|---|---|---|
-| 0:00 a 0:40 | Slide ou README | O problema não é digitar menos; é o corretor não poder confiar no preço que mostra ao cliente. Hoje não existe verificação independente do dado. |
-| 0:40 a 1:10 | Diagrama da proposta | A esteira: receber, extrair, ligar ao registro ANS, validar em quatro níveis, conferir só o que o sistema marcou e publicar com vigência. |
-| 1:10 a 1:40 | Passos 1 e 2 | Três tabelas extraídas e já validadas; o caso comum é um clique. |
-| 1:40 a 2:40 | Passo 3 | O erro de digitação pego por quatro regras independentes; correção registrada. |
-| 2:40 a 3:30 | Passo 4 | A banda da ANS é a verificação que não depende da operadora; bloqueio com saída justificada e auditada. |
-| 3:30 a 4:30 | Passos 5 e 6 | O que o corretor vê: procedência, suspensão, cotação reproduzível no passado. |
-| 4:30 a 5:00 | Passo 7 | Métricas para acompanhar depois da entrega; o que é real e o que é simulado; próximos passos. |
-
-Dicas: grave em 1280×800 ou maior, com o campo Revisor já preenchido e o cenário recém-reiniciado.
-Fale do problema do corretor antes de falar de tecnologia.
