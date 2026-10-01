@@ -60,7 +60,14 @@ def enviar_documento(request):
             metodo=request.data.get("metodo") or None, usuario=request.data.get("usuario", ""),
         )
     except DocumentoDuplicado as exc:
-        return _erro(str(exc), status.HTTP_409_CONFLICT, documento_id=exc.documento.id)
+        mensagem = str(exc)
+        if exc.documento.nome_original in demo.amostras_disponiveis():
+            # Na demonstração publicada, quem chega depois encontra a amostra já processada.
+            mensagem += (
+                ". Esta amostra já foi processada nesta demonstração. Para repetir o roteiro do zero, "
+                "use Reiniciar demonstração, no fim da aba Fontes e saúde dos dados."
+            )
+        return _erro(mensagem, status.HTTP_409_CONFLICT, documento_id=exc.documento.id)
     except ErroExtracao as exc:
         return _erro(f"Falha na extração: {exc}", status.HTTP_422_UNPROCESSABLE_ENTITY)
     return Response(
