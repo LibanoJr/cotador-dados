@@ -53,6 +53,8 @@ estiver vazia, alguém já corrigiu o Premium Apartamento; o reinício também r
 | Consulta | [`docs/02-anexo-pesquisa.md`](docs/02-anexo-pesquisa.md) | Método, uso de IA, achados com grau de confiança, pendências e referências |
 | Consulta | [`docs/03-deploy.md`](docs/03-deploy.md) | Como a demonstração foi publicada na Vercel |
 
+Os mesmos documentos estão em PDF, para ler no celular ou imprimir, na pasta [`docs/pdf/`](docs/pdf/).
+
 ## O que o protótipo demonstra
 
 O recorte é a parte central da proposta: **tabelas de preço PME**, do PDF recebido até a cotação.
