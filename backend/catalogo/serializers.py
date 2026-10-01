@@ -95,22 +95,46 @@ class TabelaDetalheSerializer(TabelaResumoSerializer):
     fonte = serializers.CharField(source="documento.fonte.nome")
     comparacao = serializers.SerializerMethodField()
     versao_vigente_id = serializers.SerializerMethodField()
+    comparacao_tipo = serializers.SerializerMethodField()
 
     class Meta(TabelaResumoSerializer.Meta):
         fields = TabelaResumoSerializer.Meta.fields + [
             "pagina_origem", "validacoes", "valores", "auditoria", "documento_url", "fonte",
             "revisado_por", "revisado_em", "observacao_revisao", "comparacao", "versao_vigente_id",
+            "comparacao_tipo",
         ]
 
     def get_documento_url(self, obj):
         return url_original(obj.documento_id)
 
     def _atual(self, obj):
+        """Versão usada como referência na comparação.
+
+        Em revisão ou rejeitada: a versão publicada hoje, que seria substituída.
+        Publicada ou substituída: a versão anterior, que ela substituiu.
+        """
         from catalogo.servicos.publicacao import tabela_publicada_atual
 
         if not hasattr(self, "_cache_atual"):
-            self._cache_atual = tabela_publicada_atual(obj) if obj.status == "em_revisao" else None
+            if obj.status in (TabelaPreco.Status.EM_REVISAO, TabelaPreco.Status.REJEITADA):
+                self._cache_atual = tabela_publicada_atual(obj)
+            else:
+                self._cache_atual = (
+                    TabelaPreco.objects.filter(
+                        **obj.chave(),
+                        status__in=[TabelaPreco.Status.PUBLICADA, TabelaPreco.Status.SUBSTITUIDA],
+                        vigencia_inicio__lt=obj.vigencia_inicio,
+                    )
+                    .exclude(pk=obj.pk)
+                    .order_by("-vigencia_inicio")
+                    .first()
+                )
         return self._cache_atual
+
+    def get_comparacao_tipo(self, obj):
+        if not self._atual(obj):
+            return None
+        return "vigente" if obj.status in (TabelaPreco.Status.EM_REVISAO, TabelaPreco.Status.REJEITADA) else "anterior"
 
     def get_comparacao(self, obj):
         from catalogo.servicos.validacao import comparar
