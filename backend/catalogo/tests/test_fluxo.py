@@ -40,6 +40,13 @@ def test_documento_duplicado_e_recusado(amostras, fonte):
     with pytest.raises(DocumentoDuplicado):
         ingerir(amostras, fonte, JAN)
 
+    # Pela API, a recusa de uma amostra da demonstração explica como recomeçar.
+    from rest_framework.test import APIClient
+
+    with open(amostras / JAN, "rb") as f:
+        r = APIClient().post("/api/documentos/enviar/", {"arquivo": f, "fonte_id": fonte.id}, format="multipart")
+    assert r.status_code == 409 and "Reiniciar demonstração" in r.json()["erro"]
+
 
 def test_erro_de_digitacao_bloqueia_ate_correcao(amostras, fonte):
     publicar_janeiro(amostras, fonte)
