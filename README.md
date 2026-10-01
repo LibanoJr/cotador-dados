@@ -156,10 +156,15 @@ nenhuma peça. As decisões e alternativas estão na seção 5.6 da proposta. As
 
 ## Uso de IA neste trabalho
 
-Usei o Claude para acelerar a pesquisa e a escrita de código. As afirmações foram conferidas nas fontes
-e classificadas por confiabilidade, e o código foi revisado, testado em PostgreSQL e usado no navegador
-antes da entrega. A seção 1.3 do [anexo de pesquisa](docs/02-anexo-pesquisa.md) descreve o processo e
-lista os erros que a revisão encontrou e corrigiu.
+Usei o Claude em todo o projeto: na pesquisa, na escrita da proposta e na maior parte do código. Meu
+papel foi definir o que construir, decidir entre as alternativas, publicar e testar o sistema no ar.
+
+A confiança no resultado vem das verificações, não da IA. As afirmações sobre regulação têm fonte e grau
+de confiança no anexo, o código tem 57 testes rodando em PostgreSQL e o fluxo completo foi usado na
+demonstração publicada. Foi assim que encontrei dois defeitos que os testes não pegavam: a correção de um
+valor falhava sem avisar, e a tela perdia a comparação depois de publicar uma tabela. Os dois foram
+corrigidos. A lista completa do que a revisão encontrou está na seção 1.3 do
+[anexo de pesquisa](docs/02-anexo-pesquisa.md).
 
 ## API
 
