@@ -58,6 +58,13 @@ def test_aprovar_com_justificativa_pela_api(amostras, fonte, referencia_ans):
     assert api.post(f"/api/tabelas/{apto.id}/aprovar/", {"usuario": "ana"}, format="json").status_code == 409
     r = api.post(f"/api/tabelas/{apto.id}/aprovar/", {"usuario": "ana", "justificativa": "confirmado"}, format="json")
     assert r.status_code == 200 and r.json()["status"] == "publicada"
+
+    # Depois de publicada, a tabela se compara com a versão que substituiu (janeiro), e não fica sem referência.
+    detalhe = api.get(f"/api/tabelas/{apto.id}/").json()
+    assert detalhe["comparacao_tipo"] == "anterior" and detalhe["versao_vigente_id"] is not None
+    assert all(abs(float(c["variacao_pct"]) - 12.5) < 0.1 for c in detalhe["comparacao"])
+    em_revisao = api.get(f"/api/tabelas/{next(t.id for t in jun if t.plano.nome == 'Premium Apartamento')}/").json()
+    assert em_revisao["comparacao_tipo"] == "vigente"
     assert api.get("/api/metricas/").json()["bloqueios_liberados_com_justificativa"] == 1
 
 
