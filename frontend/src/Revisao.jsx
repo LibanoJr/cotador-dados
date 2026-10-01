@@ -124,9 +124,19 @@ function Variacao({ pct }) {
   );
 }
 
+// Aceita "2.466,96", "2466,96", "R$ 2.466,96" e "2466.96". Devolve "2466.96" ou "" se não houver número.
+export function paraNumero(texto) {
+  let t = String(texto ?? "").replace(/[^\d.,]/g, "");
+  if (t.includes(",")) t = t.replace(/\./g, "").replace(",", ".");
+  else if (!/^\d+\.\d{1,2}$/.test(t)) t = t.replace(/\./g, "");
+  return t;
+}
+
 function LinhaFaixa({ linha, valor, problemas, editavel, aoCorrigir }) {
   const [editando, setEditando] = useState(false);
   const [novo, setNovo] = useState("");
+  const [falha, setFalha] = useState("");
+  const [salvando, setSalvando] = useState(false);
   const pior = problemas.some((p) => p.severidade === "erro" && !p.liberavel)
     ? "erro"
     : problemas.some((p) => p.liberavel)
@@ -141,14 +151,23 @@ function LinhaFaixa({ linha, valor, problemas, editavel, aoCorrigir }) {
         {editando ? (
           <form
             className="corrigir"
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              aoCorrigir(linha.faixa, novo.replace(/\./g, "").replace(",", ".")).then(() => setEditando(false));
+              const numero = paraNumero(novo);
+              if (!numero) return setFalha("Digite um valor, por exemplo 2.466,96");
+              setSalvando(true);
+              const erro = await aoCorrigir(linha.faixa, numero);
+              setSalvando(false);
+              // Só fecha a edição se a API aceitou; senão o erro aparece aqui, junto da linha.
+              if (erro) setFalha(erro);
+              else setEditando(false);
             }}
           >
-            <input autoFocus value={novo} onChange={(e) => setNovo(e.target.value)} aria-label="Valor corrigido" />
-            <button className="primario">Salvar</button>
-            <button type="button" onClick={() => setEditando(false)}>Cancelar</button>
+            <input autoFocus value={novo} onChange={(e) => { setNovo(e.target.value); setFalha(""); }}
+              aria-label="Valor corrigido" inputMode="decimal" />
+            <button className="primario" disabled={salvando}>{salvando ? "Salvando..." : "Salvar"}</button>
+            <button type="button" onClick={() => { setEditando(false); setFalha(""); }}>Cancelar</button>
+            {falha && <small className="falha-linha" role="alert">{falha}</small>}
           </form>
         ) : (
           <>
@@ -191,14 +210,17 @@ function Detalhe({ id, revisor, aoMudar }) {
     carregar();
   }, [carregar]);
 
+  // Devolve "" quando deu certo ou a mensagem de erro, para quem chamou poder mostrá-la no lugar certo.
   async function executar(fn) {
     setErro("");
     try {
       await fn();
       await carregar();
       aoMudar();
+      return "";
     } catch (e) {
       setErro(e.message);
+      return e.message;
     }
   }
 
